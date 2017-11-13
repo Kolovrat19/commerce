@@ -11,74 +11,81 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles from template -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/bulma.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset ('/css/base.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
+    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/css/bulma.css') }}">--}}
+    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/css/base.css') }}">   --}}
+
+@stack('css')
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+        @yield('main')
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+        {{--#######################################--}}
+        {{--<nav class="navbar navbar-default navbar-static-top">--}}
+            {{--<div class="container">--}}
+                {{--<div class="navbar-header">--}}
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
+                    {{--<!-- Collapsed Hamburger -->--}}
+                    {{--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">--}}
+                        {{--<span class="sr-only">Toggle Navigation</span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                        {{--<span class="icon-bar"></span>--}}
+                    {{--</button>--}}
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+                    {{--<!-- Branding Image -->--}}
+                    {{--<a class="navbar-brand" href="{{ url('/') }}">--}}
+                        {{--{{ config('app.name', 'Laravell') }}--}}
+                    {{--</a>--}}
+                {{--</div>--}}
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                {{--<div class="collapse navbar-collapse" id="app-navbar-collapse">--}}
+                    {{--<!-- Left Side Of Navbar -->--}}
+                    {{--<ul class="nav navbar-nav">--}}
+                        {{--&nbsp;--}}
+                    {{--</ul>--}}
 
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
+                    {{--<!-- Right Side Of Navbar -->--}}
+                    {{--<ul class="nav navbar-nav navbar-right">--}}
+                        {{--<!-- Authentication Links -->--}}
+                        {{--@guest--}}
+                            {{--<li><a href="{{ route('login') }}">Login</a></li>--}}
+                            {{--<li><a href="{{ route('register') }}">Register</a></li>--}}
+                        {{--@else--}}
+                            {{--<li class="dropdown">--}}
+                                {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">--}}
+                                    {{--{{ Auth::user()->name }} <span class="caret"></span>--}}
+                                {{--</a>--}}
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
+                                {{--<ul class="dropdown-menu">--}}
+                                    {{--<li>--}}
+                                        {{--<a href="{{ route('logout') }}"--}}
+                                            {{--onclick="event.preventDefault();--}}
+                                                     {{--document.getElementById('logout-form').submit();">--}}
+                                            {{--Logout--}}
+                                        {{--</a>--}}
 
-        @yield('content')
+                                        {{--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
+                                            {{--{{ csrf_field() }}--}}
+                                        {{--</form>--}}
+                                    {{--</li>--}}
+                                {{--</ul>--}}
+                            {{--</li>--}}
+                        {{--@endguest--}}
+                    {{--</ul>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</nav>--}}
+
+
     </div>
-
+    <script async type="text/javascript" src="{{ asset('js/bulma.js') }}"></script>
     <!-- Scripts -->
+    @stack('script')
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

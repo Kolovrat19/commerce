@@ -13,7 +13,7 @@
  */
 function tree(array $nodes, Closure $render = null)
 {
-    $output = '<ul class="no-bullet">';
+    $output = '<ul>';
     foreach($nodes as $node)
     {
         // Get name
@@ -26,7 +26,7 @@ function tree(array $nodes, Closure $render = null)
         if($node['children'])
             $output .= tree($node['children'], $render);
 
-        $output .= '</li>';
+        $output .= '</li> ';
     }
 
     return $output .'</ul>';

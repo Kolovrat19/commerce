@@ -995,10 +995,10 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_buefy___default.a);
  */
 //
 // Vue.component('example', require('./components/Example.vue'));
-//
-// const app = new Vue({
-//     el: '#app'
-// });
+
+var app = new Vue({
+  el: '#app'
+});
 
 /***/ }),
 /* 11 */

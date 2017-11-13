@@ -12,11 +12,13 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 
 Auth::routes();
 Route::prefix('admin')->group(function() {
+    Route::get('/dashboard', 'Admin\DashboardController@index')->name('admin.dashboard');
+
     Route::resource('/categories', 'CategoryController');
 //    Route::post('/categories/create', 'ProductController@store')->name('store.product');
 
