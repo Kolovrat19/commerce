@@ -8,11 +8,11 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-import Buefy from 'buefy';
-
-
-
-Vue.use(Buefy);
+// import Buefy from 'buefy';
+//
+//
+//
+// Vue.use(Buefy);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

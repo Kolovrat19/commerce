@@ -10,82 +10,45 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- Styles from template -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.0/css/bulma.min.css" integrity="sha256-HEtF7HLJZSC3Le1HcsWbz1hDYFPZCqDhZa9QsCgVUdw=" crossorigin="anonymous" />
-    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/css/bulma.css') }}">--}}
-    {{--<link rel="stylesheet" type="text/css" href="{{ asset ('/css/base.css') }}">   --}}
+    <!-- Vendor styles -->
+    <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/font-awesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/metisMenu/dist/metisMenu.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/animate.css/animate.css') }}" />
+    <link rel="stylesheet" href="{{ asset('vendor/bootstrap/dist/css/bootstrap.css') }}" />
 
-@stack('css')
+    @stack('css')
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- App styles -->
+    <link rel="stylesheet" href="{{ asset('fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css') }}" />
+    <link rel="stylesheet" href="{{ asset('fonts/pe-icon-7-stroke/css/helper.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+
+
+
 </head>
-<body>
-    <div id="app">
-        @yield('main')
 
-        {{--#######################################--}}
-        {{--<nav class="navbar navbar-default navbar-static-top">--}}
-            {{--<div class="container">--}}
-                {{--<div class="navbar-header">--}}
+    @yield('main')
 
-                    {{--<!-- Collapsed Hamburger -->--}}
-                    {{--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">--}}
-                        {{--<span class="sr-only">Toggle Navigation</span>--}}
-                        {{--<span class="icon-bar"></span>--}}
-                        {{--<span class="icon-bar"></span>--}}
-                        {{--<span class="icon-bar"></span>--}}
-                    {{--</button>--}}
-
-                    {{--<!-- Branding Image -->--}}
-                    {{--<a class="navbar-brand" href="{{ url('/') }}">--}}
-                        {{--{{ config('app.name', 'Laravell') }}--}}
-                    {{--</a>--}}
-                {{--</div>--}}
-
-                {{--<div class="collapse navbar-collapse" id="app-navbar-collapse">--}}
-                    {{--<!-- Left Side Of Navbar -->--}}
-                    {{--<ul class="nav navbar-nav">--}}
-                        {{--&nbsp;--}}
-                    {{--</ul>--}}
-
-                    {{--<!-- Right Side Of Navbar -->--}}
-                    {{--<ul class="nav navbar-nav navbar-right">--}}
-                        {{--<!-- Authentication Links -->--}}
-                        {{--@guest--}}
-                            {{--<li><a href="{{ route('login') }}">Login</a></li>--}}
-                            {{--<li><a href="{{ route('register') }}">Register</a></li>--}}
-                        {{--@else--}}
-                            {{--<li class="dropdown">--}}
-                                {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">--}}
-                                    {{--{{ Auth::user()->name }} <span class="caret"></span>--}}
-                                {{--</a>--}}
-
-                                {{--<ul class="dropdown-menu">--}}
-                                    {{--<li>--}}
-                                        {{--<a href="{{ route('logout') }}"--}}
-                                            {{--onclick="event.preventDefault();--}}
-                                                     {{--document.getElementById('logout-form').submit();">--}}
-                                            {{--Logout--}}
-                                        {{--</a>--}}
-
-                                        {{--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
-                                            {{--{{ csrf_field() }}--}}
-                                        {{--</form>--}}
-                                    {{--</li>--}}
-                                {{--</ul>--}}
-                            {{--</li>--}}
-                        {{--@endguest--}}
-                    {{--</ul>--}}
-                {{--</div>--}}
-            {{--</div>--}}
-        {{--</nav>--}}
+<!-- Scripts -->
+<!-- Vendor scripts -->
+<script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-ui/jquery-ui.min.js') }}"></script>
+<script src="{{ asset('vendor/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('vendor/metisMenu/dist/metisMenu.min.js') }}"></script>
+<script src="{{ asset('vendor/iCheck/icheck.min.js') }}"></script>
+<script src="{{ asset('vendor/peity/jquery.peity.min.js') }}"></script>
+<script src="{{ asset('vendor/sparkline/index.js') }}"></script>
 
 
-    </div>
-    <script async type="text/javascript" src="{{ asset('js/bulma.js') }}"></script>
-    <!-- Scripts -->
-    @stack('script')
-    <script src="{{ asset('js/app.js') }}"></script>
+
+<!-- App scripts -->
+<script src="{{ asset('js/homer.js') }}"></script>
+<script src="{{ asset('js/charts.js') }}"></script>
+
+
+@stack('script')
+
 </body>
 </html>

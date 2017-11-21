@@ -15,12 +15,12 @@ class Product extends Model
 
     // Each product has a brand
     public function brand(){
-        return $this->belongsTo('Brand');
+        return $this->belongsTo('App\Brand');
     }
 
     // Each product has a category
     public function category(){
        // return $this->belongsTo('Category');
-        return $this->belongsToMany('App\Category', 'products_categories');
+        return $this->belongsTo('App\Category');
     }
 }

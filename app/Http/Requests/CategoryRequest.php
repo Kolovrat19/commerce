@@ -24,7 +24,7 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:500',
+            'name' => 'required|string|max:255',
         ];
     }
 
@@ -36,8 +36,11 @@ class CategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'title.required' => 'A title is required',
-            'body.required'  => 'A message is required',
+            'name.required' => trans('category.name_validate.required'),
+            'name.string' => trans('category.name-validate.string'),
+            'name.max' => trans('category.name_validate.max'),
+//            'cat_select.required' => ' crt',
+
         ];
     }
 }

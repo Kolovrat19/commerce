@@ -45,8 +45,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $categories = $this->getAllCategories();
-        return view('admin.category.create')->withCategories($categories);
+        view()->share('categories', Category::dropdown());
+        return view('admin.category.create');
     }
 
     /**
@@ -57,26 +57,22 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request){
 
-//        $this->validate($request, [
-//            'name' => 'required|max:500'
-//
-//        ]);
-
         if($parentId = intval($request->parent_id)) {
-            $node = Category::create(['name' => $request->name]);
-            $node->makeChildOf(Category::findOrFail($parentId));
+                $node = Category::create(['name' => $request->name,
+                    'category_attributes' => json_encode([
+                        // Default attributes for each category
+                        'brand' => true,
+                        'price' => true,
+                    ])
+                ]);
+                $node->makeChildOf(Category::findOrFail($parentId));
         }
         else{
             $node = Category::create(['name' => $request->name]);
 
         }
-//
-//        $category = Category::create([
-//            'name'     => $request->name,
-//            'parent_id'    => $request->parent_id,
-//        ]);
 
-        return redirect()->route('categories.index');
+        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
     }
 
     /**
@@ -87,8 +83,26 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-
         $category = Category::findOrFail($id);
+
+        // Get subcategories
+        $subcategories = $category->getDescendants();
+        
+        // Get products this category
+        $products = $category->products()->orderBy('name')->get();
+//        dd($products);
+        // Get products of subcategories
+        $subproducts = Product::whereIn('category_id', $subcategories->pluck('id'))->orderBy('name')->get();
+        
+        // Function to render a tree node
+        $render = function (array $node) {
+            return link_to_route('categories.show', $node['name'], [$node['id']]);
+        };
+
+        // Build subcategories tree
+        $tree = tree($subcategories->toHierarchy()->toArray(), $render);
+
+        view()->share(compact('products', 'subproducts', 'subcategories', 'tree'));
         return view('admin.category.show')->withCategory($category);
     }
 
@@ -101,7 +115,7 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $item = Category::findOrFail($id);
-        view()->share('categories', \App\Category::dropdown());
+        view()->share('categories', Category::dropdown());
         return view('admin.category.edit')->withItem($item);
     }
 

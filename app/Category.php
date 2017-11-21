@@ -7,13 +7,17 @@ use Baum\Node;
 
 class Category extends Node
 {
+    // Cast attributes JSON to array
+    protected $casts = [
+        'category_attributes' => 'array'
+    ];
+
     protected $table = 'categories';
 
-    
     // A category has many products
     public function products(){
-        //return $this->hasMany('Product');
-        return $this->belongsToMany('App\Product', 'products_categories');
+
+        return $this->hasMany('App\Product');
     }
 
     // Static Methods ==============================================================
@@ -28,7 +32,7 @@ class Category extends Node
     {
         $categories = self::getNestedList('name', null, '--');
 
-        return ($includeRootNode) ? ['' => _('Root')] + $categories : $categories;
+        return ($includeRootNode) ? ['' => _('ROOT')] + $categories : $categories;
     }
 
 

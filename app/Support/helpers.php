@@ -13,14 +13,16 @@
  */
 function tree(array $nodes, Closure $render = null)
 {
-    $output = '<ul>';
+    $output = '<ol class="dd-list">';
     foreach($nodes as $node)
     {
         // Get name
         $name = (is_null($render)) ? $node['name'] : $render($node);
 
         // Render node
-        $output .= '<li>' . $name;
+        $output .= '<li class="dd-item" data-id='.$node['id'].'>
+                        <div class="dd-handle">
+                            <span class="label h-bg-navy-blue"><i class="fa fa-users"></i></span>'.$name.'</div>';
 
         // Render children
         if($node['children'])
@@ -29,5 +31,5 @@ function tree(array $nodes, Closure $render = null)
         $output .= '</li> ';
     }
 
-    return $output .'</ul>';
+    return $output .'</ol>';
 }

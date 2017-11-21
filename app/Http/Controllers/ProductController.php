@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use App\Product;
+use App\Brand;
 
 class ProductController extends Controller
 {
@@ -15,6 +17,8 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $products = Product::all();
+        return view('admin.product.index')->withProducts($products);
     }
 
     /**
@@ -24,7 +28,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('user.create-product');
+        view()->share('categories', Category::dropdown());
+        return view('admin.product.create');
     }
 
     /**
@@ -34,21 +39,26 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
+//        dd($request);
         // create object and set properties
-        $camera = new Product();
-        $camera->name = $request->name;
-        $camera->brand_id = $request->brand_id;
-        $camera->category_id = $request->category_id;
-        $camera->attributes = json_encode([
+        $product = new Product();
+        $product->name = $request->name;
+        $product->category_id = $request->parent_id;
+        $product->brand_id = $request->brand_id;
+        $product->attributes = json_encode([
             'processor' => $request->processor,
             'sensor_type' => $request->sensor_type,
             'monitor_type' => $request->monitor_type,
             'scanning_system' => $request->scanning_system,
         ]);
+//        $category = Category::find($product->category_id);
+//
+//        $category->products()->attach($product->id);
+//        dd($category);
         // save to database
-        $camera->save();
+        $product->save();
         // show the created camera
-        return view('product.camera.show', ['camera' => $camera]);
+        return redirect()->route('products.index');
     }
 
     /**
@@ -59,7 +69,11 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        // Get products this category
+        $brand = $product->brand;
+        view()->share(compact('brand'));
+        return view('admin.product.show')->withProduct($product);
     }
 
     /**
