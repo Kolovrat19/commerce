@@ -13,9 +13,15 @@ return [
         ],
         'parent' => 'Parent',
         'name' => 'Name Category',
-    'create' => 'Create Category',
-    'no_subcategories' => 'This category has no subcategories',
-    'pages_on_subcategories' => 'Pages on subcategories',
-    
+        'create' => 'Create Category',
+        'edit' => 'Edit Category',
+
+        'no_subcategories' => 'This category has no subcategories',
+        'pages_on_subcategories' => 'Pages on subcategories',
+        'index'=> 'Category',
+        'tree' => 'Manage category tree',
+        'collapse' => 'Collapse All',
+        'expand' => 'Expand All',
+        'tree' => 'Manage category tree',
 
 ];

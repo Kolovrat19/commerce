@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Category;
 use App\Product;
 use Illuminate\Support\Facades\Session;
+use Input;
 
 class CategoryController extends Controller
 {
@@ -18,16 +19,14 @@ class CategoryController extends Controller
     public function index(){
         // HTML of a tree node
         $template = view('admin.category._partials.node')->render();
-       // dd($template);
+
         // Function to render a tree node
 		$render = function (array $node) use ($template) {
             $template = str_replace('category_id', $node['id'], $template);
-
             return str_replace('category_name', $node['name'], $template);
      };
 
         $categories = $this->getAllCategories()->toHierarchy()->toArray();
-        //dd($categories);
         $chunks = array_chunk($categories, 1);
 
         // Add one tree per chunk
@@ -56,23 +55,23 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(CategoryRequest $request){
+                if ($parentId = intval($request->parent_id)) {
+                    $isLeaf = Category::find($parentId)->is_leaf;
+                        if(!$isLeaf) {
+                        $node = Category::create(['name' => $request->name,
+                                                  'is_leaf' => (Input::has('leaf')) ? true : false,
+                                                  'category_attributes' => (Input::has('leaf')) ? json_encode([
+                                                      ['name' => 'Price', 'variant'=>null ]
+                                                  ]) : null]);
+                        $node->makeChildOf(Category::findOrFail($parentId));
+                        } else {
+                            return redirect()->back()->with('error-store', 'Category leaf!');
+                        }
+                } else {
+                    Category::create(['name' => $request->name, 'is_leaf' => (Input::has('leaf')) ? true : false]);
+                }
 
-        if($parentId = intval($request->parent_id)) {
-                $node = Category::create(['name' => $request->name,
-                    'category_attributes' => json_encode([
-                        // Default attributes for each category
-                        'brand' => true,
-                        'price' => true,
-                    ])
-                ]);
-                $node->makeChildOf(Category::findOrFail($parentId));
-        }
-        else{
-            $node = Category::create(['name' => $request->name]);
-
-        }
-
-        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
+        return redirect()->route('categories.index')->with('success-store', 'Category created successfully!');
     }
 
     /**
@@ -90,7 +89,9 @@ class CategoryController extends Controller
         
         // Get products this category
         $products = $category->products()->orderBy('name')->get();
-//        dd($products);
+        
+        $attributes = json_decode($category->category_attributes);
+
         // Get products of subcategories
         $subproducts = Product::whereIn('category_id', $subcategories->pluck('id'))->orderBy('name')->get();
         
@@ -102,7 +103,7 @@ class CategoryController extends Controller
         // Build subcategories tree
         $tree = tree($subcategories->toHierarchy()->toArray(), $render);
 
-        view()->share(compact('products', 'subproducts', 'subcategories', 'tree'));
+        view()->share(compact('products', 'attributes', 'subproducts', 'subcategories', 'tree'));
         return view('admin.category.show')->withCategory($category);
     }
 
@@ -115,7 +116,9 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $item = Category::findOrFail($id);
-        view()->share('categories', Category::dropdown());
+        $categories = Category::dropdown();
+        $attributes = $item->category_attributes;
+        view()->share(compact('categories', 'attributes'));
         return view('admin.category.edit')->withItem($item);
     }
 
@@ -130,18 +133,27 @@ class CategoryController extends Controller
     {
 
         $updateNode = Category::find($id);
-
         $updateNode->fill($request->input());
+
+//        $originalAttributes = $updateNode->getOriginal('category_attributes');
+//        $decodeAttributes = json_decode(json_decode($originalAttributes,true));
+//        $decodeAttributes[] = ['name' => $request->category_attributes, 'active' => true];
+//        $updateNode->category_attributes = json_encode($decodeAttributes);
+          $updateNode->category_attributes = $request->category_attributes;
 //        dd($updateNode);
         $updateNode->save();
-        // If no 'parent_id' was provided it means the resource is a root node
-        if($parentId = intval($request->parent_id)) {
-            $updateNode->makeChildOf(Category::findOrFail($parentId));
-        }
-        else {
-            $updateNode->makeRoot();
-        }
-        return redirect()->route('categories.index');
+
+                // If no 'parent_id' was provided it means the resource is a root node
+                if ($parentId = intval($request->parent_id)) {
+                    if(!Category::find($parentId)->is_leaf) {
+                    $updateNode->makeChildOf(Category::findOrFail($parentId));
+                    } else {
+                        return redirect()->back()->with('error-update', 'Category leaf! NOT Move!');
+                    }
+                } else {
+                    $updateNode->makeRoot();
+                }
+        return redirect()->route('categories.show', $updateNode->id)->with('success-update', 'Category updated success');
     }
 
     /**
@@ -165,8 +177,8 @@ class CategoryController extends Controller
 
                 return redirect()->back()->withInput();
             }
-            dd(Session::class);
-            Product::where('category_id', $resource->id)->update(['category_id' => $resource->parent->id]);
+            // Delete products from storage
+            Product::where('category_id', $resource->id)->delete();
         }
         // Move subcategories to the parent
         foreach($resource->children as $children)
@@ -195,6 +207,8 @@ class CategoryController extends Controller
     public function getAllCategories(){
         return Category::all();
     }
+
+
 
 
 }

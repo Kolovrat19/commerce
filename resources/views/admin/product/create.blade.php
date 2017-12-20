@@ -52,9 +52,11 @@
                             <form class="form-horizontal" method="POST"  id="form" action="{{ route('products.store') }}">
                                 {{ csrf_field() }}
                                 <div class="form-group"><label>{{trans('category.parent')}}</label>
-                                    {!!
-                                         Form::select('parent_id', $categories, Input::get('category_id'), ['class' => 'js-source-states', 'style' => 'width: 100%'])
-                                    !!}
+                                    {{ Input::get('category_name')  }}
+                                    <input class="form-control" type="hidden" name="category_id" value="{{ Input::get('category_id') }}">
+                                    {{--{!!--}}
+                                         {{--Form::select('parent_id', $categories, Input::get('category_id'), ['class' => 'js-source-states', 'style' => 'width: 100%'])--}}
+                                    {{--!!}--}}
                                 </div>
 
                                 <div class="form-group"><label>{{trans('product.name')}}</label>
@@ -64,26 +66,19 @@
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
-
+                                {{--{{dd($brands)}}--}}
                                 <div class="form-group"><label>{{trans('product.brand')}}</label>
-                                    <input type="text" placeholder="{{trans('product.brand')}}" class="form-control" name="brand_id"></div>
+                                    {!!
+                                        Form::select('brand_id', $brands, null, ['class' => 'js-source-states', 'style' => 'width: 100%'])
+                                    !!}
+                                </div>
                                 @if ($errors->has('brand'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('brand') }}</strong>
                                     </span>
                                 @endif
-
-                                <div class="form-group"><label>{{trans('product.processor')}}</label>
-                                    <input type="text" placeholder="{{trans('product.processor')}}" class="form-control" name="processor"></div>
-
-                                <div class="form-group"><label>{{trans('product.sensor_type')}}</label>
-                                    <input type="text" placeholder="{{trans('product.sensor_type')}}" class="form-control" name="sensor_type"></div>
-
-                                <div class="form-group"><label>{{trans('product.monitor_type')}}</label>
-                                    <input type="text" placeholder="{{trans('product.monitor_type')}}" class="form-control" name="monitor_type"></div>
-
-                                <div class="form-group"><label>{{trans('product.scanning_system')}}</label>
-                                    <input type="text" placeholder="{{trans('product.scanning_system')}}" class="form-control" name="scanning_system"></div>
+                                <product-attributes-form :attributes="{{ Input::get('category_attributes') }}">
+                                </product-attributes-form>
 
                                 <div>
                                     <button class="btn btn-default" type="submit">Cancel</button>

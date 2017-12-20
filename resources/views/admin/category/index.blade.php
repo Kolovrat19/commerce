@@ -4,9 +4,10 @@
 @extends('layouts.master')
 
 @section('content')
+
     <!-- Main Wrapper -->
     <div id="wrapper">
-
+        @include('admin.category._partials.flash-message')
         <div class="normalheader transition animated fadeIn">
             <div class="hpanel">
                 <div class="panel-body">
@@ -28,9 +29,9 @@
                         </ol>
                     </div>
                     <h2 class="font-light m-b-xs">
-                        Nestable list
+                        {{trans('category.index')}}
                     </h2>
-                    <small>Nestable - Drag & drop hierarchical list.</small>
+                    <small>{{trans('category.tree')}}</small>
                 </div>
             </div>
         </div>
@@ -39,9 +40,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button" data-action="expand-all" class="btn btn-default btn-sm">Expand All</button>
-                        <button type="button" data-action="collapse-all" class="btn btn-default btn-sm">Collapse All</button>
-                        <a class="btn btn-default"  href="{!! route('categories.create') !!}">
+                        <button type="button" data-action="expand-all" class="btn btn-default btn-sm">{{trans('category.expand')}}</button>
+                        <button type="button" data-action="collapse-all" class="btn btn-default btn-sm">{{trans('category.collapse')}}</button>
+                        <a class="btn btn-primary"  href="{!! route('categories.create') !!}">
                             {{trans('category.create')}}
                         </a>
 

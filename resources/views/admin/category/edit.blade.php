@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="wrapper">
-
+        @include('admin.category._partials.flash-message')
         <div class="small-header transition animated fadeIn">
             <div class="hpanel">
                 <div class="panel-body">
@@ -49,26 +49,61 @@
                                 Edit {{ $item->name }}
                             </div>
                             <div class="panel-body">
-                                <form method="get" class="form-horizontal">
-                                    <div class="form-group"><label class="col-sm-2 control-label">Normal</label>
-
-                                        <div class="col-sm-10"><input type="text" class="form-control"></div>
+                                @if($errors->any())
+                                    <div>
+                                        @foreach($errors->all() as $error)
+                                            <p>
+                                                {{ $error }}
+                                            </p>
+                                        @endforeach
                                     </div>
-                                    <div class="hr-line-dashed"></div>
-                                    <div class="form-group"><label class="col-sm-2 control-label">Help text</label>
+                                @endif
+                                <form  action="{{ action('CategoryController@update', $item->id) }}"  method="POST"  class="form-horizontal">
 
-                                        <div class="col-sm-10"><input type="text" class="form-control"> <span class="help-block m-b-none">A block of help text that breaks onto a new line and may extend beyond one line.</span>
+                                    {{ csrf_field() }}
+                                    {{ method_field('PUT') }}
+
+                                    <div class="form-group"><label class="col-sm-2 control-label">Parent Category</label>
+                                        <div class="col-sm-10">
+                                            @if(!$item->is_leaf)
+                                                {!! Form::select('parent_id', $categories, $item->parent_id) !!}
+                                                @else
+                                                Category is LEAF
+                                                <input class="form-control" type="hidden" name="parent_id" value="{{ $item->parent_id }}">
+                                                @endif
+
                                         </div>
                                     </div>
                                     <div class="hr-line-dashed"></div>
 
+                                    <div class="form-group"><label class="col-sm-2 control-label">Name Category</label>
+                                        <div class="col-sm-10">
+                                          <input class="form-control" type="text" name="name" value="{{ old('name', $item->name) }}">
+                                        </div>
+                                    </div>
+                                    <div class="hr-line-dashed"></div>
+                                    @if($item->is_leaf)
+                                    <div class="form-group"><label class="col-sm-2 control-label">Attributes</label>
+                                        <div class="col-sm-10">
+                                            {{--{{dd($attributes)}}--}}
+                                            @if($attributes)
+                                            <category-attributes  :attributes="{{ $attributes }}">
+                                            </category-attributes>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="hr-line-dashed"></div>
                                     <div class="form-group">
                                         <div class="col-sm-8 col-sm-offset-2">
                                             <button class="btn btn-default" type="submit">Cancel</button>
                                             <button class="btn btn-primary" type="submit">Save changes</button>
                                         </div>
                                     </div>
+
                                 </form>
+
                             </div>
                         </div>
                     </div>
@@ -118,7 +153,7 @@
                     <div class="social-talk">
                         <div class="media social-profile clearfix">
                             <a class="pull-left">
-                                <img src="images/a1.jpg" alt="profile-picture">
+                                <img src="{{ asset('images/a1.jpg') }}" alt="profile-picture">
                             </a>
 
                             <div class="media-body">
@@ -133,7 +168,7 @@
                     <div class="social-talk">
                         <div class="media social-profile clearfix">
                             <a class="pull-left">
-                                <img src="images/a3.jpg" alt="profile-picture">
+                                <img src="{{ asset('images/a3.jpg') }}" alt="profile-picture">
                             </a>
 
                             <div class="media-body">
@@ -148,7 +183,7 @@
                     <div class="social-talk">
                         <div class="media social-profile clearfix">
                             <a class="pull-left">
-                                <img src="images/a4.jpg" alt="profile-picture">
+                                <img src="{{ asset('images/a4.jpg') }}" alt="profile-picture">
                             </a>
 
                             <div class="media-body">
@@ -203,51 +238,5 @@
         </footer>
 
     </div>
-    @if($errors->any())
-        <div>
-            @foreach($errors->all() as $error)
-                <p>
-                    {{ $error }}
-                </p>
-            @endforeach
-        </div>
-    @endif
-    <form  action="{{ action('CategoryController@update', $item->id) }}"  method="POST">
-
-        {{ csrf_field() }}
-        {{ method_field('PUT') }}
-        <div class="box">
-
-        <label class="label">Parent</label>
-        <p class="control">
-        {!!
-        Form::select('parent_id', $categories, $item->parent_id)
-        !!}
-        </p>
-
-   <label class="label">Name</label>
-   <p class="control">
-   <input class="input" type="text" name="name" value="{{ old('name', $item->name) }}">
-   </p>
-   </div>
-   <div class="form-group">
-
-       <button type="submit" >
-           Update
-       </button>
-   </div>
-
-</form>
 
 @endsection
-@push('script')
-<script>
-    new Vue ({
-        el: '#app',
-        data: {
-            myMethod: true,
-            lade: true
-        }
-    });
-</script>
-@endpush

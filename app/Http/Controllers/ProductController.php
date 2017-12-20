@@ -28,8 +28,9 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $brands = Brand::pluck('name', 'id');
         view()->share('categories', Category::dropdown());
-        return view('admin.product.create');
+        return view('admin.product.create')->withBrands($brands);
     }
 
     /**
@@ -39,18 +40,25 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-//        dd($request);
+
         // create object and set properties
+        $category = Category::findOrFail($request->parent_id);
+        $p = $this->setAttributeData(json_decode($category->category_attributes));
+
+
         $product = new Product();
         $product->name = $request->name;
         $product->category_id = $request->parent_id;
         $product->brand_id = $request->brand_id;
-        $product->attributes = json_encode([
-            'processor' => $request->processor,
-            'sensor_type' => $request->sensor_type,
-            'monitor_type' => $request->monitor_type,
-            'scanning_system' => $request->scanning_system,
-        ]);
+//        $product->attributes = json_encode([
+//            'processor' => $request->processor,
+//            'sensor_type' => $request->sensor_type,
+//            'monitor_type' => $request->monitor_type,
+//            'scanning_system' => $request->scanning_system,
+//        ]);
+
+
+
 //        $category = Category::find($product->category_id);
 //
 //        $category->products()->attach($product->id);
@@ -108,5 +116,11 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+    }
+    
+    public function setAttributeData($data){
+        foreach ($data as $item){
+            dd($item);
+        }
     }
 }

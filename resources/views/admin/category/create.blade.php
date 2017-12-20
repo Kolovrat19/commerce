@@ -7,10 +7,10 @@
 <link rel="stylesheet" href="{{ asset('vendor/bootstrap-datepicker-master/dist/css/bootstrap-datepicker3.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('vendor/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css') }}" />
 @endpush
+
 @section('content')
-
     <div id="wrapper">
-
+        @include('admin.category._partials.flash-message')
         <div class="small-header">
             <div class="hpanel">
                 <div class="panel-body">
@@ -55,13 +55,25 @@
                                 {!!
                                      Form::select('parent_id', $categories, null, ['class' => 'js-source-states', 'style' => 'width: 100%'])
                                 !!}
+                                    @if ($errors->has('node'))
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('node') }}</strong>
+                                    </span>
+                                    @endif
                                 </div>
+
                                 <div class="form-group"><label>{{trans('category.name')}}</label> <input type="text" placeholder="{{trans('category.name')}}" class="form-control" name="name"></div>
                                 @if ($errors->has('name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
                                 @endif
+                                <div class="form-group">
+
+                                    <div class="col-sm-10">
+                                        <label> <input type="checkbox" class="i-checks" name="leaf"> Last Category (leaf of the Tree) </label>
+                                    </div>
+                                </div>
                                 <div>
                                     {{--<button class="btn btn-default" type="submit">Cancel</button>--}}
                                     <button class="btn btn-sm btn-primary m-t-n-xs" type="submit"><strong>Submit</strong></button>

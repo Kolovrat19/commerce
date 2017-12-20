@@ -39,7 +39,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div id="nestable-menu">
-                        <button type="button"  href="{!! route('brands.create') !!}" class="btn btn-default btn-sm">{{trans('brand.create')}}</button>
+                      <a class="btn btn-default"  href="{!! route('brands.create') !!}">{{trans('brand.create')}}</a>
                     </div>
                 </div>
             </div>

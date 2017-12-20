@@ -17,6 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->string('name');
+            $table->integer('is_leaf')->nullable();            
             // Nested Set related fields
             $table->integer('parent_id')->nullable();
             $table->integer('lft')->nullable();

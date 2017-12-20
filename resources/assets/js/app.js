@@ -20,8 +20,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 //
-// Vue.component('example', require('./components/Example.vue'));
+Vue.component('category-attributes', require('./components/CategoryAttributes.vue'));
+Vue.component('product-attributes-form', require('./components/ProductAttributesForm.vue'));
+
+// Vue.component('test', require('./components/Test.vue'));
+
 
 const app = new Vue({
-    el: '#app'
+    el:  '#app'
 });

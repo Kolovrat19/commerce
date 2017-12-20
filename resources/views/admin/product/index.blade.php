@@ -41,8 +41,9 @@
                     <div id="nestable-menu">
                         <button type="button" data-action="expand-all" class="btn btn-default btn-sm">Expand All</button>
                         <button type="button" data-action="collapse-all" class="btn btn-default btn-sm">Collapse All</button>
-                        <button type="button"  href="{!! route('categories.create') !!}" class="btn btn-default btn-sm">{{trans('category.create')}}</button>
-
+                        <a class="btn btn-primary"  href="{!! route('products.create') !!}">
+                            {{trans('product.create')}}
+                        </a>
                     </div>
                 </div>
             </div>
