@@ -38,7 +38,7 @@
 
         data () {
             return {
-                items: this.attributes
+                items: this.attributes,
                 }
 
         },

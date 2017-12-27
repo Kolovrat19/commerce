@@ -40644,6 +40644,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -40651,12 +40655,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['attributes'],
 
     data: function data() {
-        return {};
+        return {
+            items: this.attributes,
+            selectedData: []
+        };
     },
 
-    watch: {},
-    computed: {}
+    computed: {
+        outputAttributes: function outputAttributes() {
+            var jsonString = JSON.stringify(this.selectedData);
+            return jsonString;
+        }
+    },
+    methods: {
+        setValue: function setValue(name, value) {
+            var self = this;
+            this.selectedData.forEach(function (val, index) {
 
+                if (val['name'] == name) {
+                    self.selectedData.splice(index, 1);
+                    return false;
+                }
+            });
+
+            this.selectedData.push({
+                "name": name,
+                "variant": value
+
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -40669,26 +40697,52 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    _vm._l(_vm.attributes, function(attribute) {
-      return _c(
-        "div",
-        { staticClass: "form-group" },
-        [
-          _c("label", [_vm._v(_vm._s(attribute.name))]),
-          _vm._v(" "),
-          _vm._l(attribute.variant, function(variant) {
-            return _c("div", [
-              _c("input", {
-                attrs: { type: "checkbox", value: "variant.name" }
-              }),
-              _vm._v("\n            " + _vm._s(variant.name) + "\n        ")
-            ])
-          }),
-          _vm._v("\n\n        " + _vm._s(attribute) + "\n        ")
-        ],
-        2
-      )
-    })
+    [
+      _vm._l(_vm.items, function(attribute, index) {
+        return _c(
+          "div",
+          { staticClass: "form-group" },
+          [
+            _vm._v(
+              "\n            " + _vm._s(attribute.name) + "\n            "
+            ),
+            _vm._l(attribute.variant, function(variant, vindex) {
+              return _c("div", [
+                _c("label", [
+                  _c("input", {
+                    attrs: {
+                      type: "radio",
+                      id: "radio" + vindex,
+                      name: "group" + index
+                    },
+                    domProps: {
+                      value: [{ name: attribute.name, variant: variant.name }]
+                    },
+                    on: {
+                      click: function($event) {
+                        _vm.setValue(attribute.name, variant.name)
+                      }
+                    }
+                  }),
+                  _vm._v("\n                    " + _vm._s(variant.name))
+                ])
+              ])
+            })
+          ],
+          2
+        )
+      }),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "hidden", name: "product_attributes" },
+        domProps: { value: _vm.outputAttributes }
+      }),
+      _vm._v(" "),
+      _c("div", { staticClass: "half" }, [
+        _c("pre", [_vm._v(_vm._s(_vm.selectedData))])
+      ])
+    ],
+    2
   )
 }
 var staticRenderFns = []

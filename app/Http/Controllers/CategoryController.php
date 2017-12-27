@@ -60,9 +60,7 @@ class CategoryController extends Controller
                         if(!$isLeaf) {
                         $node = Category::create(['name' => $request->name,
                                                   'is_leaf' => (Input::has('leaf')) ? true : false,
-                                                  'category_attributes' => (Input::has('leaf')) ? json_encode([
-                                                      ['name' => 'Price', 'variant'=>null ]
-                                                  ]) : null]);
+                                                  ]);
                         $node->makeChildOf(Category::findOrFail($parentId));
                         } else {
                             return redirect()->back()->with('error-store', 'Category leaf!');
@@ -134,7 +132,7 @@ class CategoryController extends Controller
 
         $updateNode = Category::find($id);
         $updateNode->fill($request->input());
-
+//dd($request->category_attributes);
 //        $originalAttributes = $updateNode->getOriginal('category_attributes');
 //        $decodeAttributes = json_decode(json_decode($originalAttributes,true));
 //        $decodeAttributes[] = ['name' => $request->category_attributes, 'active' => true];
@@ -207,8 +205,5 @@ class CategoryController extends Controller
     public function getAllCategories(){
         return Category::all();
     }
-
-
-
 
 }

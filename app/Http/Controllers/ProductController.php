@@ -42,27 +42,13 @@ class ProductController extends Controller
     public function store(Request $request){
 
         // create object and set properties
-        $category = Category::findOrFail($request->parent_id);
-        $p = $this->setAttributeData(json_decode($category->category_attributes));
-
-
+//        $category = Category::findOrFail($request->category_id);
         $product = new Product();
         $product->name = $request->name;
-        $product->category_id = $request->parent_id;
+        $product->category_id = $request->category_id;
         $product->brand_id = $request->brand_id;
-//        $product->attributes = json_encode([
-//            'processor' => $request->processor,
-//            'sensor_type' => $request->sensor_type,
-//            'monitor_type' => $request->monitor_type,
-//            'scanning_system' => $request->scanning_system,
-//        ]);
+        $product->attributes =  json_decode($request->product_attributes);
 
-
-
-//        $category = Category::find($product->category_id);
-//
-//        $category->products()->attach($product->id);
-//        dd($category);
         // save to database
         $product->save();
         // show the created camera
